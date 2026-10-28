@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planificador de Tareas </title>
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Enlace a tu hoja de estilos CSS personalizada -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- 1. ENCABEZADO  -->
+    <header class="app-header py-4 mb-4">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="h4 fw-bold text-dark mb-0"> Planificador de Tareas 💜 </h1>
+                <p class="text-muted small mb-0">Manteniendo tareas al dia y en orden.</p>
+            </div>
+            <div class="badge-sprint px-3 py-2 rounded-pill small fw-semibold">
+                By-Angie
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. CONTENEDOR PRINCIPAL -->
+    <main class="container pb-5">
+        <div class="row g-4">
+
+            <!--FORMULARIO -->
+            <div class="col-lg-5">
+                <div class="card card-custom p-4">
+                    <h3 class="h5 fw-bold mb-3 text-secondary">Nueva Tarea</h3>
+                    <form id="task-form">
+
+                        <!-- Título de la tarea -->
+                        <div class="mb-3">
+                            <label for="task-title" class="form-label small fw-semibold">Título de la tarea</label>
+                            <input type="text" class="form-control" id="task-title" placeholder="ej. Comprar víveres"
+                                required>
+                        </div>
+
+                        <!-- Descripción -->
+                        <div class="mb-3">
+                            <label for="task-desc" class="form-label small fw-semibold">Descripción</label>
+                            <textarea class="form-control" id="task-desc" rows="3" placeholder="Detalles de la tarea..."
+                                required></textarea>
+                        </div>
+
+                        <!-- Fecha Límite -->
+                        <div class="mb-3">
+                            <label for="task-date" class="form-label small fw-semibold">Fecha Límite</label>
+                            <input type="date" class="form-control" id="task-date" required>
+                        </div>
+
+                        <!-- Prioridad -->
+                        <div class="mb-4">
+                            <label class="form-label small fw-semibold d-block">Prioridad</label>
+                            <div class="d-flex gap-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="priority" id="alta" value="Alta">
+                                    <label class="form-check-label badge prioridad-alta" for="alta">Alta</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="priority" id="media"
+                                        value="Media" checked>
+                                    <label class="form-check-label badge prioridad-media" for="media">Media</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="priority" id="baja" value="Baja">
+                                    <label class="form-check-label badge prioridad-baja" for="baja">Baja</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botón Agregar -->
+                        <button type="submit" class="btn btn-lila w-100 py-2 fw-semibold">+ AGREGAR TAREA</button>
+                    </form>
+                </div>
+            </div>
+
+            <!--  LISTA DE TAREAS -->
+            <div class="col-lg-7">
+                <h3 class="h5 fw-bold mb-3 text-secondary">Lista de Tareas</h3>
+                <div id="tasks-container" class="d-flex flex-column gap-3">
+
+                    <!-- Tarjeta  1 -->
+                    <div class="card card-custom p-3">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="d-flex gap-3 align-items-start">
+                                <input class="form-check-input mt-1" type="checkbox">
+                                <div>
+                                    <h5 class="h6 fw-bold mb-1 text-dark">Tarea boostrap</h5>
+                                    <p class="text-muted small mb-1">Terminar Laboratorio de bootstrap</p>
+                                    <small class="text-muted" style="font-size: 0.75rem;">📅 30/10/2026</small>
+                                </div>
+                            </div>
+                            <span class="badge prioridad-media small">Media</span>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta2 -->
+                    <div class="card card-custom p-3">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="d-flex gap-3 align-items-start">
+                                <input class="form-check-input mt-1" type="checkbox">
+                                <div>
+                                    <h5 class="h6 fw-bold mb-1 text-dark">Estudiar Bootstrap</h5>
+                                    <p class="text-muted small mb-1">Revisar componentes y grillas</p>
+                                    <small class="text-muted" style="font-size: 0.75rem;">📅 02/11/2026</small>
+                                </div>
+                            </div>
+                            <span class="badge prioridad-alta small">Alta</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Bootstrap JS Bundle CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

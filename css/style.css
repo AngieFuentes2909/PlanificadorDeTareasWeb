@@ -1,0 +1,83 @@
+body {
+    background-color: #f7f5fa;
+    /* Fondo */
+    color: #74609f;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Encabezado */
+.app-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e9e3f0;
+}
+
+/* Tarjetas de Formulario y Lista*/
+.card-custom {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(114, 91, 142, 0.06);
+}
+
+/* Botón principal  */
+.btn-lila {
+    background-color: #7c689c;
+    border-color: #7c689c;
+    color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.btn-lila:hover {
+    background-color: #675584;
+    border-color: #675584;
+    color: #ffffff;
+}
+
+/* Enfoque */
+.form-control:focus,
+.form-check-input:checked {
+    border-color: #7c689c;
+    box-shadow: 0 0 0 0.25rem rgba(124, 104, 156, 0.25);
+}
+
+.form-check-input:checked {
+    background-color: #7c689c;
+}
+
+/* Colores de Prioridad */
+.prioridad-alta {
+    background-color: #fde8e8;
+    color: #c53030;
+    border: 1px solid #f8b4b4;
+}
+
+.prioridad-media {
+    background-color: #fef3c7;
+    color: #b45309;
+    border: 1px solid #fcd34d;
+}
+
+.prioridad-baja {
+    background-color: #def7ec;
+    color: #046c4e;
+    border: 1px solid #84e1bc;
+}
+
+/* Colores de Prioridad */
+.prioridad-alta {
+    background-color: #fde8e8;
+    color: #c53030;
+    border: 1px solid #f8b4b4;
+}
+
+.prioridad-media {
+    background-color: #fef3c7;
+    color: #b45309;
+    border: 1px solid #fcd34d;
+}
+
+.prioridad-baja {
+    background-color: #def7ec;
+    color: #046c4e;
+    border: 1px solid #84e1bc;
+}
