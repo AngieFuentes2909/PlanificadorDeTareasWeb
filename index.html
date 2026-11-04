@@ -4,21 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planificador de Tareas </title>
+    <title>Planificador de Tareas</title>
     <!-- Bootstrap 5 CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Enlace a tu hoja de estilos CSS personalizada -->
+    <!-- Hoja de estilos CSS personalizada -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-    <!-- 1. ENCABEZADO  -->
+
     <header class="app-header py-4 mb-4">
         <div class="container d-flex justify-content-between align-items-center">
             <div>
-                <h1 class="h4 fw-bold text-dark mb-0"> Planificador de Tareas 💜 </h1>
-                <p class="text-muted small mb-0">Manteniendo tareas al dia y en orden.</p>
+                <h1 class="h4 fw-bold text-dark mb-0">Planificador de Tareas 💜</h1>
+                <p class="text-muted small mb-0">Manteniendo tareas al día y en orden.</p>
             </div>
             <div class="badge-sprint px-3 py-2 rounded-pill small fw-semibold">
                 By-Angie
@@ -26,12 +26,35 @@
         </div>
     </header>
 
-    <!-- 2. CONTENEDOR PRINCIPAL -->
+    <!--contenedor-->
     <main class="container pb-5">
         <div class="row g-4">
 
-            <!--FORMULARIO -->
-            <div class="col-lg-5">
+            <!-- slidebar-->
+            <aside class="col-lg-4">
+                <div class="card card-custom p-3 mb-4">
+                    <h2 class="h6 fw-bold text-uppercase text-lila mb-3 px-2">Menú de Tareas</h2>
+                    <nav class="nav flex-column nav-pills-lila gap-1">
+                        <a class="nav-link active d-flex justify-content-between align-items-center" href="#">
+                            <span>📋 Todas las tareas</span>
+                            <span class="badge rounded-pill bg-white text-lila">5</span>
+                        </a>
+                        <a class="nav-link d-flex justify-content-between align-items-center" href="#">
+                            <span>⏳ En progreso</span>
+                            <span class="badge rounded-pill badge-count">2</span>
+                        </a>
+                        <a class="nav-link d-flex justify-content-between align-items-center" href="#">
+                            <span>📌 Pendientes</span>
+                            <span class="badge rounded-pill badge-count">2</span>
+                        </a>
+                        <a class="nav-link d-flex justify-content-between align-items-center" href="#">
+                            <span>✅ Completadas</span>
+                            <span class="badge rounded-pill badge-count">1</span>
+                        </a>
+                    </nav>
+                </div>
+
+                <!-- Formulario de Nueva Tarea -->
                 <div class="card card-custom p-4">
                     <h3 class="h5 fw-bold mb-3 text-secondary">Nueva Tarea</h3>
                     <form id="task-form">
@@ -52,14 +75,14 @@
 
                         <!-- Fecha Límite -->
                         <div class="mb-3">
-                            <label for="task-date" class="form-label small fw-semibold">Fecha Límite</label>
+                            <label for="task-date" class="form-label small fw-semibold">Fecha de entrega</label>
                             <input type="date" class="form-control" id="task-date" required>
                         </div>
 
                         <!-- Prioridad -->
                         <div class="mb-4">
                             <label class="form-label small fw-semibold d-block">Prioridad</label>
-                            <div class="d-flex gap-4">
+                            <div class="d-flex gap-3 flex-wrap">
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="priority" id="alta" value="Alta">
                                     <label class="form-check-label badge prioridad-alta" for="alta">Alta</label>
@@ -80,45 +103,145 @@
                         <button type="submit" class="btn btn-lila w-100 py-2 fw-semibold">+ AGREGAR TAREA</button>
                     </form>
                 </div>
-            </div>
+            </aside>
 
-            <!--  LISTA DE TAREAS -->
-            <div class="col-lg-7">
-                <h3 class="h5 fw-bold mb-3 text-secondary">Lista de Tareas</h3>
+            <!-- contenedor de la lista de tareas -->
+            <section class="col-lg-8">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="h5 fw-bold mb-0 text-secondary">Lista de Tareas</h2>
+                    <span class="badge badge-sprint px-3 py-2 rounded-pill small">5 tareas registradas</span>
+                </div>
+
+                <!-- Flex de las Tarjetas de Tareas -->
                 <div id="tasks-container" class="d-flex flex-column gap-3">
 
-                    <!-- Tarjeta  1 -->
-                    <div class="card card-custom p-3">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div class="d-flex gap-3 align-items-start">
-                                <input class="form-check-input mt-1" type="checkbox">
-                                <div>
-                                    <h5 class="h6 fw-bold mb-1 text-dark">Tarea boostrap</h5>
-                                    <p class="text-muted small mb-1">Terminar Laboratorio de bootstrap</p>
-                                    <small class="text-muted" style="font-size: 0.75rem;">📅 30/10/2026</small>
+                    <!-- Tarjeta1-->
+                    <article class="card card-custom task-card">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-start gap-3">
+                                <div class="d-flex gap-3 align-items-start">
+                                    <input class="form-check-input mt-1" type="checkbox" aria-label="Marcar tarea">
+                                    <div>
+                                        <h3 class="card-title h6 fw-bold mb-1 text-dark">Diseño de tarjetas</h3>
+                                        <p class="card-text text-muted small mb-2">
+                                            hacer tarjeta utilizando clases card badges y utilidades flex.
+                                        </p>
+                                        <div class="d-flex flex-wrap align-items-center gap-3 text-muted small">
+                                            <span>📅 <strong>Entrega:</strong> 05/11/2026</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-column align-items-end gap-2">
+                                    <span class="badge prioridad-alta rounded-pill">Prioridad Alta</span>
+                                    <span class="badge estado-progreso rounded-pill">En progreso</span>
                                 </div>
                             </div>
-                            <span class="badge prioridad-media small">Media</span>
                         </div>
-                    </div>
+                    </article>
 
                     <!-- Tarjeta2 -->
-                    <div class="card card-custom p-3">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div class="d-flex gap-3 align-items-start">
-                                <input class="form-check-input mt-1" type="checkbox">
-                                <div>
-                                    <h5 class="h6 fw-bold mb-1 text-dark">Estudiar Bootstrap</h5>
-                                    <p class="text-muted small mb-1">Revisar componentes y grillas</p>
-                                    <small class="text-muted" style="font-size: 0.75rem;">📅 02/11/2026</small>
+                    <article class="card card-custom task-card">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-start gap-3">
+                                <div class="d-flex gap-3 align-items-start">
+                                    <input class="form-check-input mt-1" type="checkbox" aria-label="Marcar tarea">
+                                    <div>
+                                        <h3 class="card-title h6 fw-bold mb-1 text-dark">Definir paleta de colores </h3>
+                                        <p class="card-text text-muted small mb-2">
+                                            mantener una interfaz suave, limpia y accesible.
+                                        </p>
+                                        <div class="d-flex flex-wrap align-items-center gap-3 text-muted small">
+                                            <span>📅 <strong>Entrega:</strong> 07/11/2026</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-column align-items-end gap-2">
+                                    <span class="badge prioridad-media rounded-pill">Prioridad Media</span>
+                                    <span class="badge estado-progreso rounded-pill">En progreso</span>
                                 </div>
                             </div>
-                            <span class="badge prioridad-alta small">Alta</span>
                         </div>
-                    </div>
+                    </article>
+
+                    <!-- Tarjeta3 -->
+                    <article class="card card-custom task-card">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-start gap-3">
+                                <div class="d-flex gap-3 align-items-start">
+                                    <input class="form-check-input mt-1" type="checkbox" aria-label="Marcar tarea">
+                                    <div>
+                                        <h3 class="card-title h6 fw-bold mb-1 text-dark">Preparar presentación del
+                                            Sprint 1</h3>
+                                        <p class="card-text text-muted small mb-2">
+                                            explicar la estructura HTML5.
+                                        </p>
+                                        <div class="d-flex flex-wrap align-items-center gap-3 text-muted small">
+                                            <span>📅 <strong>Entrega:</strong> 10/11/2026</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-column align-items-end gap-2">
+                                    <span class="badge prioridad-alta rounded-pill">Prioridad Alta</span>
+                                    <span class="badge estado-pendiente rounded-pill">Pendiente</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Tarjeta4 -->
+                    <article class="card card-custom task-card">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-start gap-3">
+                                <div class="d-flex gap-3 align-items-start">
+                                    <input class="form-check-input mt-1" type="checkbox" aria-label="Marcar tarea">
+                                    <div>
+                                        <h3 class="card-title h6 fw-bold mb-1 text-dark">Revisar adaptabilidad</h3>
+                                        <p class="card-text text-muted small mb-2">
+                                            Verificar que tenga adaptabilidad.
+                                        </p>
+                                        <div class="d-flex flex-wrap align-items-center gap-3 text-muted small">
+                                            <span>📅 <strong>Entrega:</strong> 12/11/2026</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-column align-items-end gap-2">
+                                    <span class="badge prioridad-baja rounded-pill">Prioridad Baja</span>
+                                    <span class="badge estado-pendiente rounded-pill">Pendiente</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Tarjeta5 -->
+                    <article class="card card-custom task-card task-completed">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-start gap-3">
+                                <div class="d-flex gap-3 align-items-start">
+                                    <input class="form-check-input mt-1" type="checkbox" checked
+                                        aria-label="Marcar tarea">
+                                    <div>
+                                        <h3 class="card-title h6 fw-bold mb-1 text-dark text-decoration-line-through">
+                                            Configurar repositorio en
+                                            GitHub</h3>
+                                        <p class="card-text text-muted small mb-2">
+                                            Inicializar el proyecto local con Git, crear la estructura de carpetas y
+                                            subir el primer commit.
+                                        </p>
+                                        <div class="d-flex flex-wrap align-items-center gap-3 text-muted small">
+                                            <span>📅 <strong>Entrega:</strong> 28/10/2026</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-column align-items-end gap-2">
+                                    <span class="badge prioridad-media rounded-pill">Prioridad Media</span>
+                                    <span class="badge estado-completada rounded-pill">Completada</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
 
                 </div>
-            </div>
+            </section>
 
         </div>
     </main>

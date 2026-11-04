@@ -1,25 +1,76 @@
 body {
     background-color: #f7f5fa;
-    /* Fondo */
     color: #74609f;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Encabezado */
+
+.text-lila {
+    color: #74609f;
+}
+
+.badge-sprint {
+    background-color: #efeaf6;
+    color: #675584;
+    border: 1px solid #dfd5ec;
+}
+
+/* header */
 .app-header {
     background-color: #ffffff;
     border-bottom: 1px solid #e9e3f0;
 }
 
-/* Tarjetas de Formulario y Lista*/
 .card-custom {
     background-color: #ffffff;
-    border: none;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(114, 91, 142, 0.06);
+    border: 1px solid #efeaf6;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(114, 91, 142, 0.05);
 }
 
-/* Botón principal  */
+/* menu lateraal*/
+.nav-pills-lila .nav-link {
+    color: #6c637d;
+    border-radius: 10px;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.nav-pills-lila .nav-link:hover {
+    background-color: #f4f0fa;
+    color: #5c4979;
+}
+
+.nav-pills-lila .nav-link.active {
+    background-color: #7c689c;
+    color: #ffffff;
+}
+
+.badge-count {
+    background-color: #efeaf6;
+    color: #74609f;
+}
+
+/* Tarjeta de Tarea individual */
+.task-card {
+    border-left: 4px solid #b5a3d1;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.task-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(114, 91, 142, 0.1);
+}
+
+.task-completed {
+    background-color: #fcfbfe;
+    border-left-color: #a7d7c5;
+    opacity: 0.85;
+}
+
+/* Bton  principal */
 .btn-lila {
     background-color: #7c689c;
     border-color: #7c689c;
@@ -33,51 +84,57 @@ body {
     color: #ffffff;
 }
 
-/* Enfoque */
 .form-control:focus,
-.form-check-input:checked {
+.form-check-input:focus {
     border-color: #7c689c;
     box-shadow: 0 0 0 0.25rem rgba(124, 104, 156, 0.25);
 }
 
 .form-check-input:checked {
     background-color: #7c689c;
+    border-color: #7c689c;
 }
 
-/* Colores de Prioridad */
+/* colores de Prioridad */
 .prioridad-alta {
     background-color: #fde8e8;
     color: #c53030;
     border: 1px solid #f8b4b4;
+    font-weight: 600;
 }
 
 .prioridad-media {
     background-color: #fef3c7;
     color: #b45309;
     border: 1px solid #fcd34d;
+    font-weight: 600;
 }
 
 .prioridad-baja {
     background-color: #def7ec;
     color: #046c4e;
     border: 1px solid #84e1bc;
+    font-weight: 600;
 }
 
-/* Colores de Prioridad */
-.prioridad-alta {
-    background-color: #fde8e8;
-    color: #c53030;
-    border: 1px solid #f8b4b4;
+/* Colores de Estado de la Tarea */
+.estado-pendiente {
+    background-color: #f3f0f7;
+    color: #6e5f87;
+    border: 1px solid #dfd7eb;
+    font-weight: 500;
 }
 
-.prioridad-media {
-    background-color: #fef3c7;
-    color: #b45309;
-    border: 1px solid #fcd34d;
+.estado-progreso {
+    background-color: #e9e0f8;
+    color: #5b3e96;
+    border: 1px solid #cbb8ee;
+    font-weight: 500;
 }
 
-.prioridad-baja {
-    background-color: #def7ec;
-    color: #046c4e;
-    border: 1px solid #84e1bc;
+.estado-completada {
+    background-color: #e6f4ea;
+    color: #1e7e34;
+    border: 1px solid #b7e1cd;
+    font-weight: 500;
 }
