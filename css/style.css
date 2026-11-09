@@ -65,9 +65,40 @@ body {
 }
 
 .task-completed {
-    background-color: #fcfbfe;
-    border-left-color: #a7d7c5;
-    opacity: 0.85;
+    background-color: #f4fbf7;
+    border-left-color: #48bb78;
+    opacity: 0.88;
+}
+
+/* Botón interactivo para alternar estado (Toggle) */
+.btn-toggle-status {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.btn-status-pending {
+    background-color: #f4f0fa;
+    color: #675584;
+    border: 1px solid #d8cce8;
+}
+
+.btn-status-pending:hover {
+    background-color: #7c689c;
+    color: #ffffff;
+    border-color: #7c689c;
+}
+
+.btn-status-completed {
+    background-color: #e6f4ea;
+    color: #1e7e34;
+    border: 1px solid #b7e1cd;
+}
+
+.btn-status-completed:hover {
+    background-color: #d1ecda;
+    color: #155724;
 }
 
 /* Bton  principal */

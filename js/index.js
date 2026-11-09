@@ -1,3 +1,7 @@
+// clase TaskManager
+const taskManager = new TaskManager();
+console.log(taskManager.tasks);
+
 // Selectores del DOM
 const taskForm = document.querySelector('#task-form');
 const taskTitleInput = document.querySelector('#task-title');
@@ -6,6 +10,9 @@ const taskDateInput = document.querySelector('#task-date');
 const formAlert = document.querySelector('#form-alert');
 const filterLinks = document.querySelectorAll('.nav-pills-lila .nav-link');
 const taskCards = document.querySelectorAll('#tasks-container .task-card');
+const countAllBadge = document.querySelector('#count-all');
+const countPendingBadge = document.querySelector('#count-pending');
+const countCompletedBadge = document.querySelector('#count-completed');
 
 /**
  * funcion obligatoria opara validar
@@ -45,14 +52,14 @@ function validFormFieldInput(data) {
     };
 }
 
-// Evento de envío del formulario
+// envio del formulario
 taskForm.addEventListener('submit', function (event) {
     event.preventDefault();
 
-    // Capturar la opción de prioridad seleccionada
+    // prioridad seleccionada
     const selectedPriority = document.querySelector('input[name="priority"]:checked');
 
-    // Construir el objeto con los valores capturados del DOM
+
     const formData = {
         title: taskTitleInput.value,
         description: taskDescInput.value,
@@ -60,10 +67,10 @@ taskForm.addEventListener('submit', function (event) {
         priority: selectedPriority ? selectedPriority.value : ''
     };
 
-    // Comprobar en consola la captura de los valores antes de lanzar las alertas
+
     console.log('Datos capturados del formulario:', formData);
 
-    // Ejecutar la función de validación
+    //  función de validacion
     const validationResult = validFormFieldInput(formData);
 
     if (!validationResult.isValid) {
@@ -78,21 +85,114 @@ taskForm.addEventListener('submit', function (event) {
         `;
         console.log('Errores de validación:', validationResult.errors);
     } else {
-        // Ocultar la alerta de error si todos los datos son válidos y procesar el envío
+
         formAlert.classList.add('d-none');
         formAlert.innerHTML = '';
 
-        console.log('✅ Tarea validada y procesada correctamente:', formData);
+        console.log(' Tarea validada y procesada correctamente:', formData);
         taskForm.reset();
     }
 });
 
-// Funcionalidad del filtro
+/**
+ * Actualizacion de los contadores 
+ */
+function updateTaskCounters() {
+    const total = taskCards.length;
+    const completed = document.querySelectorAll('#tasks-container .task-card.task-completed').length;
+    const pending = total - completed;
+
+    if (countAllBadge) countAllBadge.textContent = total;
+    if (countPendingBadge) countPendingBadge.textContent = pending;
+    if (countCompletedBadge) countCompletedBadge.textContent = completed;
+}
+
+/**
+ * funcion para actualizar la tarjeta entre Pendiente y Completada
+ * @param {HTMLElement} card 
+ */
+function toggleTaskStatus(card) {
+    const title = card.querySelector('.card-title');
+    const statusBadge = card.querySelector('.status-badge');
+    const toggleBtn = card.querySelector('.btn-toggle-status');
+    const checkbox = card.querySelector('.form-check-input');
+
+    // Verificar si la tarjeta está actualmente completada
+    const isCompleted = card.classList.contains('task-completed');
+
+    if (isCompleted) {
+        // Cambiar a estado Pendiente
+        card.classList.remove('task-completed');
+        title.classList.remove('text-decoration-line-through');
+
+        if (statusBadge) {
+            statusBadge.textContent = 'Pendiente';
+            statusBadge.classList.remove('estado-completada');
+            statusBadge.classList.add('estado-pendiente');
+        }
+
+        if (toggleBtn) {
+            toggleBtn.textContent = '✓ Completar';
+            toggleBtn.classList.remove('btn-status-completed');
+            toggleBtn.classList.add('btn-status-pending');
+        }
+
+        if (checkbox) {
+            checkbox.checked = false;
+        }
+
+        console.log(`🔄 Tarea marcada como Pendiente: "${title.textContent.trim()}"`);
+    } else {
+        // Cambiar a estado Completada
+        card.classList.add('task-completed');
+        title.classList.add('text-decoration-line-through');
+
+        if (statusBadge) {
+            statusBadge.textContent = 'Completada';
+            statusBadge.classList.remove('estado-pendiente');
+            statusBadge.classList.add('estado-completada');
+        }
+
+        if (toggleBtn) {
+            toggleBtn.textContent = '↩ Reabrir';
+            toggleBtn.classList.remove('btn-status-pending');
+            toggleBtn.classList.add('btn-status-completed');
+        }
+
+        if (checkbox) {
+            checkbox.checked = true;
+        }
+
+        console.log(`✅ Tarea marcada como Completada: "${title.textContent.trim()}"`);
+    }
+
+
+    updateTaskCounters();
+}
+
+taskCards.forEach(function (card) {
+    const toggleBtn = card.querySelector('.btn-toggle-status');
+    const checkbox = card.querySelector('.form-check-input');
+
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', function () {
+            toggleTaskStatus(card);
+        });
+    }
+
+    if (checkbox) {
+        checkbox.addEventListener('change', function () {
+            toggleTaskStatus(card);
+        });
+    }
+});
+
+// funcionalidad del filtro
 filterLinks.forEach(function (link) {
     link.addEventListener('click', function (event) {
         event.preventDefault();
 
-        // Actualizar estado activo de los botones del menú
+        //  estado activo de los botones del menú
         filterLinks.forEach(function (item) {
             item.classList.remove('active');
             const badge = item.querySelector('.badge');
@@ -117,9 +217,6 @@ filterLinks.forEach(function (link) {
         taskCards.forEach(function (card) {
             if (filterText.includes('Todas')) {
                 card.classList.remove('d-none');
-            } else if (filterText.includes('En progreso')) {
-                const isProgreso = card.querySelector('.estado-progreso') !== null;
-                card.classList.toggle('d-none', !isProgreso);
             } else if (filterText.includes('Pendientes')) {
                 const isPendiente = card.querySelector('.estado-pendiente') !== null;
                 card.classList.toggle('d-none', !isPendiente);
