@@ -1,4 +1,4 @@
-// clase TaskManager
+// Instancia de la clase TaskManager
 const taskManager = new TaskManager();
 console.log(taskManager.tasks);
 
@@ -52,29 +52,31 @@ function validFormFieldInput(data) {
     };
 }
 
-// envio del formulario
+// envio del formulario (Sprint 2 - Tarea 5)
 taskForm.addEventListener('submit', function (event) {
     event.preventDefault();
 
-    // prioridad seleccionada
+    // Recuperar los valores de los campos del formulario
+    const name = taskTitleInput.value.trim();
+    const description = taskDescInput.value.trim();
+    const dueDate = taskDateInput.value;
     const selectedPriority = document.querySelector('input[name="priority"]:checked');
-
+    const status = selectedPriority ? selectedPriority.value : '';
 
     const formData = {
-        title: taskTitleInput.value,
-        description: taskDescInput.value,
-        date: taskDateInput.value,
-        priority: selectedPriority ? selectedPriority.value : ''
+        title: name,
+        description: description,
+        date: dueDate,
+        priority: status
     };
-
 
     console.log('Datos capturados del formulario:', formData);
 
-    //  función de validacion
+    // Ejecutar la función de validación existente
     const validationResult = validFormFieldInput(formData);
 
     if (!validationResult.isValid) {
-
+        // Impedir el registro y mostrar los errores correspondientes
         formAlert.classList.remove('d-none', 'alert-success');
         formAlert.classList.add('alert-danger');
         formAlert.innerHTML = `
@@ -85,11 +87,18 @@ taskForm.addEventListener('submit', function (event) {
         `;
         console.log('Errores de validación:', validationResult.errors);
     } else {
-
+        // Ocultar la alerta de error
         formAlert.classList.add('d-none');
         formAlert.innerHTML = '';
 
-        console.log(' Tarea validada y procesada correctamente:', formData);
+        // Agregar la tarea de manera programada usando TaskManager
+        taskManager.addTask(name, description, dueDate, status);
+
+        // Verificar en consola el arreglo actualizado de tareas con su id único
+        console.log(' Tarea agregada exitosamente. Estado actual de taskManager.tasks:');
+        console.log(taskManager.tasks);
+
+        // Limpiar el formulario
         taskForm.reset();
     }
 });
