@@ -1,15 +1,14 @@
-// Funcion para crear el HTML de cada tarjeta
+// Funcion para crear el HTML de cada tarjeta (recibe id como primer parametro - Tarea 7)
 const createTaskHtml = (id, name, description, dueDate, status, priority = 'Media') => {
-    const isCompleted = status === 'COMPLETADA';
+    const isCompleted = status === 'DONE' || status === 'COMPLETADA';
 
     let priorityClass = 'prioridad-media';
     if (priority === 'Alta') priorityClass = 'prioridad-alta';
     if (priority === 'Baja') priorityClass = 'prioridad-baja';
 
     const statusBadgeClass = isCompleted ? 'estado-completada' : 'estado-pendiente';
-    const statusText = isCompleted ? 'Completada' : 'Pendiente';
-    const toggleBtnClass = isCompleted ? 'btn-status-completed' : 'btn-status-pending';
-    const toggleBtnText = isCompleted ? 'Marcar pendiente' : 'Completar';
+    const statusText = isCompleted ? 'DONE' : status;
+    const doneBtnVisibility = isCompleted ? 'd-none' : '';
 
     return `
         <article class="card card-custom task-card ${isCompleted ? 'task-completed' : ''}" data-task-id="${id}">
@@ -32,10 +31,10 @@ const createTaskHtml = (id, name, description, dueDate, status, priority = 'Medi
                         </div>
                     </div>
                     <div class="d-flex align-items-center gap-2 ms-sm-auto" data-task-id="${id}">
-                        <button type="button" class="btn btn-sm btn-toggle-status done-button ${toggleBtnClass}">
-                            ${toggleBtnText}
+                        <button type="button" class="done-button btn btn-sm btn-toggle-status btn-status-pending ${doneBtnVisibility}">
+                            Completar
                         </button>
-                        <button type="button" class="btn btn-sm btn-delete-task delete-button">
+                        <button type="button" class="delete-button btn btn-sm btn-delete-task">
                             Eliminar
                         </button>
                     </div>
@@ -68,7 +67,7 @@ class TaskManager {
         this.tasks.push(task);
     }
 
-    // Buscar tarea por id
+    // Buscar tarea por id (Tarea 7)
     getTaskById(taskId) {
         let foundTask;
 
@@ -96,17 +95,18 @@ class TaskManager {
         this.tasks = newTasks;
     }
 
-    // Renderizar lista de tareas
+    // Renderizar lista de tareas pasando task.id a createTaskHtml
     render(activeFilter = 'Todas') {
         const tasksHtmlList = [];
 
         for (let i = 0; i < this.tasks.length; i++) {
             const task = this.tasks[i];
+            const isTaskDone = task.status === 'DONE' || task.status === 'COMPLETADA';
 
-            if (activeFilter.includes('Pendientes') && task.status === 'COMPLETADA') {
+            if (activeFilter.includes('Pendientes') && isTaskDone) {
                 continue;
             }
-            if (activeFilter.includes('Completadas') && task.status !== 'COMPLETADA') {
+            if (activeFilter.includes('Completadas') && !isTaskDone) {
                 continue;
             }
 
@@ -136,7 +136,7 @@ class TaskManager {
 
         // Actualizar contadores
         const total = this.tasks.length;
-        const completed = this.tasks.filter(t => t.status === 'COMPLETADA').length;
+        const completed = this.tasks.filter(t => t.status === 'DONE' || t.status === 'COMPLETADA').length;
         const pending = total - completed;
 
         const countAllBadge = document.querySelector('#count-all');
@@ -169,7 +169,7 @@ class TaskManager {
             this.addTask('Definir paleta de colores', 'mantener una interfaz suave, limpia y accesible.', '07/11/2026', 'Media', 'PORHACER');
             this.addTask('Preparar presentación del Sprint 1', 'explicar la estructura HTML5.', '10/11/2026', 'Alta', 'PORHACER');
             this.addTask('Revisar adaptabilidad', 'Verificar que tenga adaptabilidad.', '12/11/2026', 'Baja', 'PORHACER');
-            this.addTask('Configurar repositorio en GitHub', 'Inicializar el proyecto local con Git, crear la estructura de carpetas y subir el primer commit.', '28/10/2026', 'Media', 'COMPLETADA');
+            this.addTask('Configurar repositorio en GitHub', 'Inicializar el proyecto local con Git, crear la estructura de carpetas y subir el primer commit.', '28/10/2026', 'Media', 'DONE');
             this.save();
         }
 

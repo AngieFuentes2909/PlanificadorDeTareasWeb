@@ -11,7 +11,7 @@ const taskTitleInput = document.querySelector('#task-title');
 const taskDescInput = document.querySelector('#task-desc');
 const taskDateInput = document.querySelector('#task-date');
 const formAlert = document.querySelector('#form-alert');
-const tasksContainer = document.querySelector('#tasks-container');
+const tasksList = document.querySelector('#tasks-container');
 const filterLinks = document.querySelectorAll('.nav-pills-lila .nav-link');
 
 let currentFilter = 'Todas';
@@ -88,26 +88,33 @@ taskForm.addEventListener('submit', function (event) {
     }
 });
 
-// Eventos para completar y eliminar tareas
-tasksContainer.addEventListener('click', function (event) {
-    if (
-        event.target.classList.contains('done-button') ||
-        event.target.classList.contains('btn-toggle-status') ||
-        event.target.classList.contains('done-checkbox')
-    ) {
+// EventListener en el contenedor de la lista de tareas (Tareas 6 y 7)
+tasksList.addEventListener('click', function (event) {
+    // 1. Verificar si el elemento clickeado contiene la clase done-button (Tarea 7)
+    if (event.target.classList.contains('done-button')) {
+        const parentTask = event.target.parentElement;
+        const taskId = Number(parentTask.dataset.taskId);
+        const task = taskManager.getTaskById(taskId);
+
+        task.status = 'DONE';
+        taskManager.save();
+        taskManager.render(currentFilter);
+    }
+
+    // Alternar tambien desde el checkbox de la tarjeta
+    if (event.target.classList.contains('done-checkbox')) {
         const parentTask = event.target.closest('[data-task-id]');
         const taskId = Number(parentTask.dataset.taskId);
         const task = taskManager.getTaskById(taskId);
 
-        if (task) {
-            task.status = task.status === 'COMPLETADA' ? 'PORHACER' : 'COMPLETADA';
-            taskManager.save();
-            taskManager.render(currentFilter);
-        }
+        task.status = task.status === 'DONE' ? 'PORHACER' : 'DONE';
+        taskManager.save();
+        taskManager.render(currentFilter);
     }
 
+    // 2. Verificar si el elemento clickeado contiene la clase delete-button (Tarea 6)
     if (event.target.classList.contains('delete-button')) {
-        const parentTask = event.target.closest('[data-task-id]');
+        const parentTask = event.target.parentElement;
         const taskId = Number(parentTask.dataset.taskId);
 
         taskManager.deleteTask(taskId);
