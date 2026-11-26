@@ -1,5 +1,8 @@
-// Instancia de la clase TaskManager
-const taskManager = new TaskManager();
+// Instancia de TaskManager
+const taskManager = new TaskManager(0);
+
+taskManager.load();
+taskManager.render();
 console.log(taskManager.tasks);
 
 // Selectores del DOM
@@ -8,40 +11,30 @@ const taskTitleInput = document.querySelector('#task-title');
 const taskDescInput = document.querySelector('#task-desc');
 const taskDateInput = document.querySelector('#task-date');
 const formAlert = document.querySelector('#form-alert');
+const tasksContainer = document.querySelector('#tasks-container');
 const filterLinks = document.querySelectorAll('.nav-pills-lila .nav-link');
-const taskCards = document.querySelectorAll('#tasks-container .task-card');
-const countAllBadge = document.querySelector('#count-all');
-const countPendingBadge = document.querySelector('#count-pending');
-const countCompletedBadge = document.querySelector('#count-completed');
 
-/**
- * funcion obligatoria opara validar
- * @param {Object} data 
- * @returns {Object} 
- */
+let currentFilter = 'Todas';
+
+// Funcion obligatoria para validar campos del formulario
 function validFormFieldInput(data) {
-    // comprobar en consola los datos recibidos 
-    console.log('Validando datos en validFormFieldInput(data):', data);
+    console.log('Validando datos:', data);
 
     const errors = [];
 
-    // nombre: No puede estar vacío
     if (!data.title || data.title.trim() === '') {
         errors.push('El título de la tarea no puede estar vacío.');
     }
 
-    // descripción: No puede estar vacía
     if (!data.description || data.description.trim() === '') {
         errors.push('La descripción no puede estar vacía.');
     }
 
-    // Fecha de entrega: Debe contener una fecha válida
     const parsedDate = Date.parse(data.date);
     if (!data.date || data.date.trim() === '' || isNaN(parsedDate)) {
         errors.push('Debes seleccionar una fecha de entrega válida.');
     }
 
-    // estado/Prioridad: Debe tener una opción seleccionada
     if (!data.priority || data.priority.trim() === '') {
         errors.push('Debes seleccionar una prioridad (Alta, Media o Baja).');
     }
@@ -52,156 +45,82 @@ function validFormFieldInput(data) {
     };
 }
 
-// envio del formulario (Sprint 2 - Tarea 5)
+// Envio del formulario
 taskForm.addEventListener('submit', function (event) {
     event.preventDefault();
 
-    // Recuperar los valores de los campos del formulario
     const name = taskTitleInput.value.trim();
     const description = taskDescInput.value.trim();
     const dueDate = taskDateInput.value;
     const selectedPriority = document.querySelector('input[name="priority"]:checked');
-    const status = selectedPriority ? selectedPriority.value : '';
+    const priority = selectedPriority ? selectedPriority.value : '';
 
     const formData = {
         title: name,
         description: description,
         date: dueDate,
-        priority: status
+        priority: priority
     };
 
-    console.log('Datos capturados del formulario:', formData);
+    console.log('Datos capturados:', formData);
 
-    // Ejecutar la función de validación existente
     const validationResult = validFormFieldInput(formData);
 
     if (!validationResult.isValid) {
-        // Impedir el registro y mostrar los errores correspondientes
         formAlert.classList.remove('d-none', 'alert-success');
         formAlert.classList.add('alert-danger');
         formAlert.innerHTML = `
-            <strong>⚠️ Por favor corrige los siguientes campos:</strong>
+            <strong>Por favor revisa los siguientes campos:</strong>
             <ul class="mb-0 mt-1 ps-3">
                 ${validationResult.errors.map(err => `<li>${err}</li>`).join('')}
             </ul>
         `;
-        console.log('Errores de validación:', validationResult.errors);
     } else {
-        // Ocultar la alerta de error
         formAlert.classList.add('d-none');
         formAlert.innerHTML = '';
 
-        // Agregar la tarea de manera programada usando TaskManager
-        taskManager.addTask(name, description, dueDate, status);
+        taskManager.addTask(name, description, dueDate, priority);
+        taskManager.save();
+        taskManager.render(currentFilter);
 
-        // Verificar en consola el arreglo actualizado de tareas con su id único
-        console.log(' Tarea agregada exitosamente. Estado actual de taskManager.tasks:');
         console.log(taskManager.tasks);
-
-        // Limpiar el formulario
         taskForm.reset();
     }
 });
 
-/**
- * Actualizacion de los contadores 
- */
-function updateTaskCounters() {
-    const total = taskCards.length;
-    const completed = document.querySelectorAll('#tasks-container .task-card.task-completed').length;
-    const pending = total - completed;
+// Eventos para completar y eliminar tareas
+tasksContainer.addEventListener('click', function (event) {
+    if (
+        event.target.classList.contains('done-button') ||
+        event.target.classList.contains('btn-toggle-status') ||
+        event.target.classList.contains('done-checkbox')
+    ) {
+        const parentTask = event.target.closest('[data-task-id]');
+        const taskId = Number(parentTask.dataset.taskId);
+        const task = taskManager.getTaskById(taskId);
 
-    if (countAllBadge) countAllBadge.textContent = total;
-    if (countPendingBadge) countPendingBadge.textContent = pending;
-    if (countCompletedBadge) countCompletedBadge.textContent = completed;
-}
-
-/**
- * funcion para actualizar la tarjeta entre Pendiente y Completada
- * @param {HTMLElement} card 
- */
-function toggleTaskStatus(card) {
-    const title = card.querySelector('.card-title');
-    const statusBadge = card.querySelector('.status-badge');
-    const toggleBtn = card.querySelector('.btn-toggle-status');
-    const checkbox = card.querySelector('.form-check-input');
-
-    // Verificar si la tarjeta está actualmente completada
-    const isCompleted = card.classList.contains('task-completed');
-
-    if (isCompleted) {
-        // Cambiar a estado Pendiente
-        card.classList.remove('task-completed');
-        title.classList.remove('text-decoration-line-through');
-
-        if (statusBadge) {
-            statusBadge.textContent = 'Pendiente';
-            statusBadge.classList.remove('estado-completada');
-            statusBadge.classList.add('estado-pendiente');
+        if (task) {
+            task.status = task.status === 'COMPLETADA' ? 'PORHACER' : 'COMPLETADA';
+            taskManager.save();
+            taskManager.render(currentFilter);
         }
-
-        if (toggleBtn) {
-            toggleBtn.textContent = '✓ Completar';
-            toggleBtn.classList.remove('btn-status-completed');
-            toggleBtn.classList.add('btn-status-pending');
-        }
-
-        if (checkbox) {
-            checkbox.checked = false;
-        }
-
-        console.log(`🔄 Tarea marcada como Pendiente: "${title.textContent.trim()}"`);
-    } else {
-        // Cambiar a estado Completada
-        card.classList.add('task-completed');
-        title.classList.add('text-decoration-line-through');
-
-        if (statusBadge) {
-            statusBadge.textContent = 'Completada';
-            statusBadge.classList.remove('estado-pendiente');
-            statusBadge.classList.add('estado-completada');
-        }
-
-        if (toggleBtn) {
-            toggleBtn.textContent = '↩ Reabrir';
-            toggleBtn.classList.remove('btn-status-pending');
-            toggleBtn.classList.add('btn-status-completed');
-        }
-
-        if (checkbox) {
-            checkbox.checked = true;
-        }
-
-        console.log(`✅ Tarea marcada como Completada: "${title.textContent.trim()}"`);
     }
 
+    if (event.target.classList.contains('delete-button')) {
+        const parentTask = event.target.closest('[data-task-id]');
+        const taskId = Number(parentTask.dataset.taskId);
 
-    updateTaskCounters();
-}
-
-taskCards.forEach(function (card) {
-    const toggleBtn = card.querySelector('.btn-toggle-status');
-    const checkbox = card.querySelector('.form-check-input');
-
-    if (toggleBtn) {
-        toggleBtn.addEventListener('click', function () {
-            toggleTaskStatus(card);
-        });
-    }
-
-    if (checkbox) {
-        checkbox.addEventListener('change', function () {
-            toggleTaskStatus(card);
-        });
+        taskManager.deleteTask(taskId);
+        taskManager.save();
+        taskManager.render(currentFilter);
     }
 });
 
-// funcionalidad del filtro
+// Filtro del menu lateral
 filterLinks.forEach(function (link) {
     link.addEventListener('click', function (event) {
         event.preventDefault();
 
-        //  estado activo de los botones del menú
         filterLinks.forEach(function (item) {
             item.classList.remove('active');
             const badge = item.querySelector('.badge');
@@ -218,21 +137,7 @@ filterLinks.forEach(function (link) {
             activeBadge.classList.add('bg-white', 'text-lila');
         }
 
-        // identificar cual filtro se undio
-        const filterText = link.textContent.trim();
-        console.log('Filtro seleccionado:', filterText);
-
-        // mostrar y ocultar tarjetas según su estado
-        taskCards.forEach(function (card) {
-            if (filterText.includes('Todas')) {
-                card.classList.remove('d-none');
-            } else if (filterText.includes('Pendientes')) {
-                const isPendiente = card.querySelector('.estado-pendiente') !== null;
-                card.classList.toggle('d-none', !isPendiente);
-            } else if (filterText.includes('Completadas')) {
-                const isCompletada = card.querySelector('.estado-completada') !== null;
-                card.classList.toggle('d-none', !isCompletada);
-            }
-        });
+        currentFilter = link.textContent.trim();
+        taskManager.render(currentFilter);
     });
 });
